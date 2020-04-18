@@ -1,0 +1,164 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include "Circle.h"
+#include "Rectangle.h"
+
+class Menu {
+
+private:
+    std::vector<Rectangle> VRectangles;
+    std::vector<circle> Vcircles;
+
+    int type;
+
+public:
+    Menu() {
+        type = 0;
+    }
+
+    void setType() {
+        std::cout << "Choose type of the operation:\n";
+        std::cout << "1 - Edd Rectangle\n";
+        std::cout << "2 - Edd circle\n";
+        std::cout << "3 - Show all figures\n";
+        std::cout << "4 - Show total area of figures\n";
+        std::cout << "5 - Show total perimeter of figures\n";
+        std::cout << "6 - Show center mass of all figures\n";
+        std::cout << "7 - Show total memory that objects occupy\n";
+        std::cout << "8 - Sort all figures by mass\n\n";
+        std::cin >> type;
+    }
+
+    void doType() {
+        Rectangle r;
+        circle el;
+        double per_ans = 0;
+        double area_ans = 0;
+        double xc = 0;
+        double yc = 0;
+        double sum_mass = 0;
+        int sum_size = 0;
+
+        switch (type) {
+
+            case 0:
+                std::cout << "Type of operation not found!\n";
+                break;
+
+            case 1:
+                r.initFromDialog();
+                VRectangles.push_back(r);
+                break;
+
+            case 2:
+                el.initFromDialog();
+                Vcircles.push_back(el);
+                break;
+
+            case 3:
+                std::cout << "-----\nAll figures: \n";
+                for (int i = 0; i < VRectangles.size(); ++i) {
+                    std::cout << i << " Rectangle \n";
+                    VRectangles[i].draw();
+                    std::cout << "\n";
+                }
+                std::cout << "\n";
+                for (int i = 0; i < Vcircles.size(); ++i) {
+                    std::cout << i << " circle \n";
+                    Vcircles[i].draw();
+                    std::cout << "\n";
+                }
+                std::cout << "\n-----------\n";
+                break;
+
+            case 4:
+                for (int i = 0; i < VRectangles.size(); ++i) {
+                    area_ans += VRectangles[i].square();
+                }
+
+                for (int i = 0; i < Vcircles.size(); ++i) {
+                    area_ans += Vcircles[i].square();
+                }
+                std::cout << "\nTotal area = " << area_ans << "\n";
+                break;
+
+            case 5:
+                for (int i = 0; i < VRectangles.size(); ++i) {
+                    per_ans += VRectangles[i].perimeter();
+                }
+
+                for (int i = 0; i < Vcircles.size(); ++i) {
+                    per_ans += Vcircles[i].perimeter();
+                }
+                std::cout << "\nTotal perimeter = " << per_ans << "\n";
+                break;
+
+            case 6:
+                for (int i = 0; i < VRectangles.size(); ++i) {
+                    Rectangle t = VRectangles[i];
+                    xc += t.x * t.mass();
+                    yc += t.y * t.mass();
+                    sum_mass += t.mass();
+                }
+
+                for (int i = 0; i < Vcircles.size(); ++i) {
+                    circle t = Vcircles[i];
+                    xc += t.x * t.mass();
+                    yc += t.y * t.mass();
+                    sum_mass += t.mass();
+                }
+
+                xc /= sum_mass;
+                yc /= sum_mass;
+
+                std::cout << "\nCenter mass: (" << xc << ", " << yc << ")\n";
+                break;
+
+            case 7:
+                for (int i = 0; i < VRectangles.size(); ++i) {
+
+                    sum_size += VRectangles[i].size();
+                }
+
+                for (int i = 0; i < Vcircles.size(); ++i) {
+                    sum_size += Vcircles[i].size();
+                }
+                std::cout << "\nTotal memory = " << sum_size << "\n";
+                break;
+
+            case 8:
+                std::sort(VRectangles.begin(), VRectangles.end());
+                break;
+
+            default:
+                std::cout << "Wrong type of operation\n";
+                break;
+        }
+    }
+
+};
+
+int main() {
+
+    Rectangle r1;
+    std::cout << r1.size() << "\n";
+
+
+    Menu m;
+    int f1 = 1;
+
+    while (f1 == 1) {
+        m.setType();
+        m.doType();
+
+        std::cout << "Do you want to continue?\n";
+        std::cout << "1 - Yes\n";
+        std::cout << "2 - No\n";
+
+        std::cin >> f1;
+    }
+
+
+    return 0;
+}
